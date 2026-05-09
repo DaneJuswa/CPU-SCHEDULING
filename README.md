@@ -21,3 +21,13 @@ A Python-based simulation of CPU scheduling algorithms with GUI support. The pro
 
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![Tkinter](https://img.shields.io/badge/Tkinter-GUI-blue?style=for-the-badge&logo=python&logoColor=white)](https://docs.python.org/3/library/tkinter.html)
+
+## How to Run the Program
+
+### Option 1: Run the Executable
+Download and double-click the file below:
+
+👉 [CPU_Scheduling.exe](./CPU_Scheduling.exe)
+
+### Option 2: Run with Python
+```bash
