@@ -27,7 +27,7 @@ A Python-based simulation of CPU scheduling algorithms with GUI support. The pro
 ### Option 1: Run the Executable
 Download and double-click the file below:
 
-👉 [CPU_Scheduling.exe](./CPU_Scheduling.exe)
+👉 [CPU_Scheduling.exe](./dist/CpuScheduling_Python.exe)
 
 ### Option 2: Run with Python
 ```bash
