@@ -31,4 +31,4 @@ Download and double-click the file below:
 
 ### Option 2: Run with Python
 ```bash
-python main.py
+python CpuScheduling_Python.py
