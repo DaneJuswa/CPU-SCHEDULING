@@ -4,7 +4,7 @@ from tkinter import ttk, messagebox, font as tkfont
 
 
 # UTILS (General Variables Color for Reuse)
-BG        = "#F7FAF7"   # soft white with slight green tint
+BG        = "#F7FAF7"   
 lighterBG = "#EAF3EA" 
 sectionsBG = "#FFFFFF"
 fontColor  = "#4B5563"
