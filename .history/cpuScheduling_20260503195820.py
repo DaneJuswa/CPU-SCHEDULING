@@ -448,7 +448,7 @@ class MainApp(tk.Tk):
         self.algoComboBox.pack(fill="x")
         self.algoComboBox.bind("<<ComboboxSelected>>", self.changeAlgo)
 
-        # Quantum Part (visible in RR-based Algorithm)
+        # Quantum Section (visible in RR-based Algorithm)
         self.quantumContainer = tk.Frame(algoContainer, bg=CARD)
         tk.Label(self.quantumContainer, text="Time Quantum", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
@@ -457,7 +457,7 @@ class MainApp(tk.Tk):
                     textvariable=self.quantumValue, width=5,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8,0))
 
-        # Priority Part
+        # Priority Section
         self.priorityContainer = tk.Frame(algoContainer, bg=CARD)
         tk.Label(self.priorityContainer, text="Priority Value", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
@@ -592,7 +592,7 @@ class MainApp(tk.Tk):
         right = tk.Frame(parent, bg=BG)
         right.grid(row=0, column=1, sticky="nsew")
 
-        # ── Gantt Section ──
+        # GANTT SECTION
         tk.Label(right, text="GANTT CHART", bg=BG, fg=MUTED,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
@@ -608,17 +608,17 @@ class MainApp(tk.Tk):
         gsc.pack(fill="x", padx=8, pady=(0, 8))
         self.gantt_canvas.configure(xscrollcommand=gsc.set)
 
-        # ── Table Section ──
+        # TABLE SECTION
         tk.Label(right, text="RESULTS TABLE", bg=BG, fg=MUTED,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
         table_card = tk.Frame(right, bg=CARD)
         table_card.pack(fill="both", expand=True)
 
-        # Inner frame for treeview + scrollbar side by side
+        # Inner frame for SCROLLBAR
         tree_frame = tk.Frame(table_card, bg=CARD)
         tree_frame.pack(fill="both", expand=True, padx=8, pady=8)
-
+        
         cols = ("pid", "at", "bt", "priority", "finish", "tat", "wt")
         self.tree = ttk.Treeview(tree_frame, columns=cols,
                                   show="headings", selectmode="none")
@@ -966,7 +966,7 @@ class MainApp(tk.Tk):
     def _fill_table(self, results):
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for i, r in enumerate(results):
+        for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
             tag = ("alt",) if i % 2 else ()
             self.tree.insert("", "end", values=(
                 r["pid"], r["at"], r["bt"], r["priority"],
@@ -1048,7 +1048,7 @@ class MainApp(tk.Tk):
             for col, lbl, w in [("pid","PID",50),("at","AT",60),("bt","BT",55),
                                   ("finish","Finish",65),("tat","TAT",60),("wt","WT",60)]:
                 tr.heading(col, text=lbl); tr.column(col, width=w, anchor="center")
-            for i, r in enumerate(results):
+            for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
                 tag = ("alt",) if i%2 else ()
                 tr.insert("", "end", values=(r["pid"],r["at"],r["bt"],
                                               r["finish"],r["tat"],r["wt"]), tags=tag)

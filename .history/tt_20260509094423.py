@@ -1,23 +1,13 @@
-#final
 import copy
 import tkinter as tk
 from tkinter import ttk, messagebox, font as tkfont
 
 
-# UTILS
-# bg color palette
-BG        = "#1B211A"  
-PANEL     = "#232C22"  
-CARD      = "#2C3A2B"  
-BORDER    = "#3E4A3A"  
-ACCENT    = "#628141" 
-ACCENT2   = "#8BAE66"  
-TEXT      = "#EBD5AB" 
-MUTED     = "#A8B39A"  
-ERROR     = "#C96A5B"  
-WARNING   = "#C2A25A"  
-SUCCESS   = "#7FAE7A"  
-PINK      = "#F4A7B9"  
+# UTILS (General Variables Color for Reuse)
+BG        = "#F7FAF7"   # soft white with slight green tint
+lighterBG = "#EAF3EA" 
+sectionsBG = "#FFFFFF"
+fontColor  = "#4B5563"
 
 # list of colors for process identifier
 processColors = [
@@ -58,7 +48,6 @@ def computeTaT_WT(processes): #function for solving Turn Around and Waiting Time
     return results
 
 #END OF GENERAL FUNCTION
-
 
 
 # SOLVING FUNCTIONS / LOGIC FOR EACH ALGORITHM
@@ -283,33 +272,6 @@ def run_priority_rr(processes, quantum, higher_is_better):
 # END OF SOLVING FUNCTIONS / LOGIC FOR EACH ALGORITHM
 
 
-
-# utility functions
-# class Tooltip:
-#     def __init__(self, widget, text):
-#         self.widget = widget
-#         self.text   = text
-#         self.tip    = None
-#         widget.bind("<Enter>", self.show)
-#         widget.bind("<Leave>", self.hide)
-
-#     def show(self, _=None):
-#         x, y, _, _ = self.widget.bbox("insert") if hasattr(self.widget,"bbox") else (0,0,0,0)
-#         x += self.widget.winfo_rootx() + 20
-#         y += self.widget.winfo_rooty() + 20
-#         self.tip = tw = tk.Toplevel(self.widget)
-#         tw.wm_overrideredirect(True)
-#         tw.wm_geometry(f"+{x}+{y}")
-#         lbl = tk.Label(tw, text=self.text, background="#2e3250", foreground=TEXT,
-#                        relief="flat", padx=8, pady=4,
-#                        font=("Consolas", 9))
-#         lbl.pack()
-
-#     def hide(self, _=None):
-#         if self.tip: self.tip.destroy(); self.tip = None
-     
-# end of utility functions
-
 # MAIN APPLICATION
 class MainApp(tk.Tk):
     
@@ -318,8 +280,8 @@ class MainApp(tk.Tk):
         super().__init__()
         self.title("CPU Scheduling Simulator")
         self.configure(bg=BG)
-        self.geometry("1200x820")
-        self.minsize(950, 650)
+        self.geometry("1400x820")
+        self.minsize(1100, 650)
         self.resizable(True, True)
 
         # state initialization
@@ -334,44 +296,44 @@ class MainApp(tk.Tk):
     def setUpGeneralStyles(self):
         style = ttk.Style(self)
         style.theme_use("clam")
-        style.configure(".", background=BG, foreground=TEXT, borderwidth=0)
+        style.configure(".", background=BG, foreground=fontColor, borderwidth=0)
         style.configure("TFrame",     background=BG)
-        style.configure("Card.TFrame",background=CARD, relief="flat")
-        style.configure("TLabel",     background=BG, foreground=TEXT,
+        style.configure("Card.TFrame",background=sectionsBG, relief="flat")
+        style.configure("TLabel",     background=BG, foreground=fontColor,
                         font=("Segoe UI", 10))
-        style.configure("Title.TLabel", background=BG, foreground=TEXT,
+        style.configure("Title.TLabel", background=BG, foreground=fontColor,
                         font=("Segoe UI", 22, "bold"))
-        style.configure("Sub.TLabel",   background=BG, foreground=MUTED,
+        style.configure("Sub.TLabel",   background=BG, foreground=fontColor,
                         font=("Segoe UI", 10))
-        style.configure("CardTitle.TLabel", background=CARD, foreground=TEXT,
+        style.configure("CardTitle.TLabel", background=sectionsBG, foreground=fontColor,
                         font=("Segoe UI", 11, "bold"))
-        style.configure("Card.TLabel",  background=CARD, foreground=TEXT,
+        style.configure("Card.TLabel",  background=sectionsBG, foreground=fontColor,
                         font=("Segoe UI", 10))
-        style.configure("Muted.TLabel", background=CARD, foreground=MUTED,
+        style.configure("Muted.TLabel", background=sectionsBG, foreground=fontColor,
                         font=("Segoe UI", 9))
-        style.configure("Stat.TLabel",  background=CARD, foreground=ACCENT2,
+        style.configure("Stat.TLabel",  background=sectionsBG, foreground="#22C55E" ,
                         font=("Segoe UI", 16, "bold"))
-        style.configure("StatSub.TLabel",background=CARD, foreground=MUTED,
+        style.configure("StatSub.TLabel",background=sectionsBG, foreground=fontColor,
                         font=("Segoe UI", 8))
-        style.configure("TCombobox", fieldbackground=PANEL, background=PANEL,
-                        foreground=TEXT, selectbackground=ACCENT,
-                        arrowcolor=MUTED)
-        style.map("TCombobox", fieldbackground=[("readonly", PANEL)])
-        style.configure("TEntry", fieldbackground=PANEL, foreground=TEXT,
-                        insertcolor=TEXT, borderwidth=1, relief="flat")
-        style.configure("TSpinbox", fieldbackground=PANEL, foreground=TEXT,
-                        arrowcolor=MUTED, borderwidth=0)
-        style.configure("Treeview", background=PANEL, foreground=TEXT,
-                        fieldbackground=PANEL, rowheight=28,
-                        font=("Consolas", 10))
-        style.configure("Treeview.Heading", background=CARD,
-                        foreground=MUTED, font=("Segoe UI", 9, "bold"),
+        style.configure("TCombobox", fieldbackground=lighterBG, background=lighterBG,
+                        foreground=fontColor, selectbackground="#16A34A",
+                        arrowcolor=fontColor)
+        style.map("TCombobox", fieldbackground=[("readonly", lighterBG)])
+        style.configure("TEntry", fieldbackground=lighterBG, foreground=fontColor,
+                        insertcolor=fontColor, borderwidth=1, relief="flat")
+        style.configure("TSpinbox", fieldbackground=lighterBG, foreground=fontColor,
+                        arrowcolor=fontColor, borderwidth=0)
+        style.configure("Treeview", background="#FFFFFF", foreground="green",
+                        fieldbackground="#FFFFFF", rowheight=34,
+                        font=("Consolas", 12, "bold"))
+        style.configure("Treeview.Heading", background="#D6E8D6",
+                        foreground="#1a1a1a", font=("Segoe UI", 11, "bold"),
                         relief="flat")
-        style.map("Treeview", background=[("selected", ACCENT)])
-        style.configure("Vertical.TScrollbar", background=PANEL,
-                        troughcolor=BG, arrowcolor=MUTED)
-        style.configure("Horizontal.TScrollbar", background=PANEL,
-                        troughcolor=BG, arrowcolor=MUTED)
+        style.map("Treeview", background=[("selected", "#16A34A")])
+        style.configure("Vertical.TScrollbar", background=lighterBG,
+                        troughcolor=BG, arrowcolor=fontColor)
+        style.configure("Horizontal.TScrollbar", background=lighterBG,
+                        troughcolor=BG, arrowcolor=fontColor)
 
     # MAIN UI
     def buildUI(self):
@@ -382,35 +344,42 @@ class MainApp(tk.Tk):
         # LEFT SIDE OF HEADER (TITLE)
         leftSideHeader = tk.Frame(header, bg=BG)
         leftSideHeader.pack(side="left")
-        tk.Label(leftSideHeader, text="⚙  CPU Scheduling Simulator",
-                 bg=BG, fg=TEXT, font=("Segoe UI", 18, "bold")).pack(side="left")
-        tk.Label(leftSideHeader, text="OS Process Management",
-                 bg=BG, fg=MUTED, font=("Segoe UI", 9)).pack(side="left", padx=(10, 0), pady=(5, 0))
- 
+
+        # Status dot + label (fixed width to prevent resize on text change)
+        self.statusDot = tk.Label(leftSideHeader, text="●", bg=BG, fg=fontColor,
+                                  font=("Segoe UI", 18))
+        self.statusDot.pack(side="left")
+
+        self.statusLabel = tk.Label(leftSideHeader, text="Status: Running",
+                                    bg=BG, fg=fontColor, font=("Segoe UI", 15, "bold"),
+                                    width=16, anchor="w")
+        self.statusLabel.configure(text="Status: Idle")
+        self.statusLabel.pack(side="left", padx=(4, 0))
+
+        
         # RIGHT SIDE OF HEADER (RESET AND RUN BUTTON)
         rightSideHeader = tk.Frame(header, bg=BG)
         rightSideHeader.pack(side="right")
+
+    
+        # CENTER TITLE
+        tk.Label(header, text="| CPU SCHEDULING SIMULATOR |",
+                 bg=BG, fg=fontColor, font=("Segoe UI", 18, "bold")).pack(side="left", expand=True)
         
         # Reset button
-        self.buttonTemplate(rightSideHeader, "↺ RESET", self._reset_processes,
-                    fg="white", font=("Segoe UI", 10, "bold"), bg=ERROR).pack(side="left", padx=(8, 0))
+        self.buttonTemplate(rightSideHeader, "↺ RESET", self.resetProcess,
+                    fg="white", font=("Segoe UI", 10, "bold"), bg="#DC2626").pack(side="left", padx=(8, 0))
         
         # Run button
-        tk.Button(rightSideHeader, text="▶  Run",
-                  bg=ACCENT, fg="white",
-                  font=("Segoe UI", 10, "bold"),
-                  relief="flat", cursor="hand2",
-                  activebackground="#5a52d5",
-                  activeforeground="white",
-                  padx=14, pady=6,
-                  command=self._run_simulation).pack(side="left", padx=(8, 0))
+        tk.Button(rightSideHeader, text="▶  Run", bg="#16A34A", fg="white", font=("Segoe UI", 10, "bold"), relief="flat", cursor="hand2",
+                  activebackground="#5a52d5", activeforeground="white", padx=14, pady=6, command=self.runApp).pack(side="left", padx=(8, 0))
         
         # END OF HEADER CONTAINER
         
         # MAIN PANEL
         mainPanel = tk.Frame(self, bg=BG)
         mainPanel.pack(fill="both", expand=True, padx=24, pady=16)
-        mainPanel.columnconfigure(0, weight=0, minsize=320)
+        mainPanel.columnconfigure(0, weight=0, minsize=260)
         mainPanel.columnconfigure(1, weight=1)
         mainPanel.rowconfigure(0, weight=1)
 
@@ -423,21 +392,21 @@ class MainApp(tk.Tk):
         left.grid(row=0, column=0, sticky="ns", padx=(0, 16))
 
         #  OUTER CONTAINER FOR USER INPUT (Algorithm AND Processes) 
-        outerContainer = tk.Frame(left, bg=CARD, bd=0)
+        outerContainer = tk.Frame(left, bg=sectionsBG, bd=0)
         outerContainer.pack(fill="x")
 
         # USER INPUT TITLE
-        tk.Label(outerContainer, text="USER INPUT", bg=BG, fg=MUTED,
+        tk.Label(outerContainer, text="USER INPUT", bg=BG, fg=fontColor,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
         # ALGORITHM TITLE
-        tk.Label(outerContainer, text="ALGORITHM", bg=CARD, fg=TEXT, font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=10, pady=(8, 2))
+        tk.Label(outerContainer, text="CHOOSE ALGORITHM", bg=sectionsBG, fg=fontColor, font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=10, pady=(8, 2))
         
         #ALGORITHM CONTAINER
-        algoContainer = tk.Frame(outerContainer, bg=CARD)
+        algoContainer = tk.Frame(outerContainer, bg=sectionsBG)
         algoContainer.pack(fill="x", padx=10, pady=(0, 8))
         
-        af = tk.Frame(algoContainer, bg=CARD)
+        af = tk.Frame(algoContainer, bg=sectionsBG)
         af.pack(fill="x", padx=10, pady=10)
 
         self.algoSelected = tk.StringVar(value="FCFS")
@@ -448,20 +417,20 @@ class MainApp(tk.Tk):
         self.algoComboBox.pack(fill="x")
         self.algoComboBox.bind("<<ComboboxSelected>>", self.changeAlgo)
 
-        # Quantum Part (visible in RR-based Algorithm)
-        self.quantumContainer = tk.Frame(algoContainer, bg=CARD)
-        tk.Label(self.quantumContainer, text="Time Quantum", bg=CARD, fg=TEXT,
+        # Quantum Section (visible in RR-based Algorithm)
+        self.quantumContainer = tk.Frame(algoContainer, bg=sectionsBG)
+        tk.Label(self.quantumContainer, text="Time Quantum", bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 9)).pack(side="left")
         self.quantumValue = tk.IntVar(value=2)
         ttk.Spinbox(self.quantumContainer, from_=1, to=99,
                     textvariable=self.quantumValue, width=5,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8,0))
 
-        # Priority Part
-        self.priorityContainer = tk.Frame(algoContainer, bg=CARD)
-        tk.Label(self.priorityContainer, text="Priority Value", bg=CARD, fg=TEXT,
+        # Priority Section
+        self.priorityContainer = tk.Frame(algoContainer, bg=sectionsBG)
+        tk.Label(self.priorityContainer, text="Priority Value", bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 9)).pack(side="left")
-        self.priorityValue = tk.StringVar(value="Lower = Higher")
+        self.priorityValue = tk.StringVar(value="Higher = Higher Priority")
         ttk.Combobox(self.priorityContainer, textvariable=self.priorityValue,
                      values=["Lower = Higher Priority","Higher = Higher Priority"],
                      state="readonly", width=22,
@@ -469,13 +438,12 @@ class MainApp(tk.Tk):
 
         self.changeAlgo()  # set initial visibility
 
-        
         # Initial Number of Process Input
-        numberProcessContainer = tk.Frame(outerContainer, bg=CARD)
+        numberProcessContainer = tk.Frame(outerContainer, bg=sectionsBG)
         numberProcessContainer.pack(fill="x", padx=10, pady=10)
 
         tk.Label(numberProcessContainer, text="Number of Processes:",
-                 bg=CARD, fg=MUTED,
+                 bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 9)).pack(side="left")
 
         self.numberProcessValue = tk.IntVar(value=3)
@@ -483,31 +451,27 @@ class MainApp(tk.Tk):
                     textvariable=self.numberProcessValue, width=40,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8, 6))
 
+        # Generate Process Button
         tk.Button(numberProcessContainer, text="Generate",
-                  bg=ACCENT, fg="white",
-                  font=("Segoe UI", 9, "bold"),
-                  relief="flat", cursor="hand2",
-                  activebackground="#4e6832",
-                  activeforeground="white",
-                  padx=8, pady=2,
-                  command=self._generate_processes).pack(side="right")
+                  bg="#16A34A", fg="white", font=("Segoe UI", 9, "bold"),  relief="flat", cursor="hand2", activebackground="#4e6832",
+                  activeforeground="white", padx=8, pady=2, command=self.generateProcessFunctioj).pack(side="right")
         
         # Process Label and Generate Section
-        ProcessAndButtonLabel = tk.Frame(outerContainer, bg=CARD)
+        ProcessAndButtonLabel = tk.Frame(outerContainer, bg=sectionsBG)
         ProcessAndButtonLabel.pack(fill="x", padx=10, pady=(8, 2))
 
         tk.Label(ProcessAndButtonLabel, text="PROCESSES",
-                 bg=CARD, fg=TEXT,
+                 bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 8, "bold")).pack(side="left")
 
-        btn_row = tk.Frame(ProcessAndButtonLabel, bg=CARD)
+        btn_row = tk.Frame(ProcessAndButtonLabel, bg=sectionsBG)
         btn_row.pack(side="right")
 
-        self.buttonTemplate(btn_row, "ADD PROCESS", self._add_process_row, #Add Process Button
-                    fg="white", bg=ACCENT).pack(side="left")
+        self.buttonTemplate(btn_row, "ADD PROCESS", self.addProcessFunction, #Add Process Button
+                    fg="white", bg="#16A34A").pack(side="left")
         
-        self.buttonTemplate(btn_row, "CLEAR VALUES", self._clear_all_process, #Clear Values Button
-                    fg=ACCENT, bg=TEXT).pack(side="left", padx=(8, 0))
+        self.buttonTemplate(btn_row, "CLEAR VALUES", self.clearValuesFunction, #Clear Values Button
+                    fg=BG, bg="#DC2626").pack(side="left", padx=(8, 0))
         
         
         # PROCESS CONTAINER
@@ -518,7 +482,7 @@ class MainApp(tk.Tk):
         hdr = tk.Frame(inputProcessContainer, bg=BG)
         hdr.pack(fill="x", padx=70, pady=10)
         for col, w, txt in [("PID",7,"PID"),("Arrival Time",10,"Arrival Time"),("Burst Time",10,"Burst Time"),("Priority",10,"Priority"),("",3,"")]:
-            tk.Label(hdr, text=txt, bg=BG, fg=TEXT,
+            tk.Label(hdr, text=txt, bg=BG, fg=fontColor,
                      font=("Segoe UI", 8, "bold"), width=w, anchor="center").pack(side="left")
 
         # Scrollable Section IN PROCESS CONTAINER
@@ -556,12 +520,13 @@ class MainApp(tk.Tk):
         self._proc_canvas.bind("<MouseWheel>", _on_mousewheel)
         self.proc_frame.bind("<MouseWheel>", _on_mousewheel)
 
-        self._add_process_row()
-        self._add_process_row()
-        self._add_process_row()
+        # ADD 3 PROCESS AS INITIAL INPUT
+        self.addProcessFunction()
+        self.addProcessFunction()
+        self.addProcessFunction()
     
         # SUMMARY TABLE SECTION
-        self.sectionLabel(left, "SUMMARY TABLE", pady=(16,4))
+        self.sectionLabel(left, "SUMMARY REPORT", pady=(16,4))
         stats = tk.Frame(left, bg=BG)
         stats.pack(fill="x")
         
@@ -592,37 +557,39 @@ class MainApp(tk.Tk):
         right = tk.Frame(parent, bg=BG)
         right.grid(row=0, column=1, sticky="nsew")
 
-        # ── Gantt Section ──
-        tk.Label(right, text="GANTT CHART", bg=BG, fg=MUTED,
+        # GANTT SECTION
+        tk.Label(right, text="GANTT CHART", bg=BG, fg=fontColor,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
-        gantt_card = tk.Frame(right, bg=CARD)
+        gantt_card = tk.Frame(right, bg=sectionsBG)
         gantt_card.pack(fill="x", pady=(0, 12))
+        gantt_card.columnconfigure(0, weight=1)
 
-        self.gantt_canvas = tk.Canvas(gantt_card, bg=CARD,
+        self.gantt_canvas = tk.Canvas(gantt_card, bg=sectionsBG,
                                       highlightthickness=0, height=170)
-        self.gantt_canvas.pack(fill="x", padx=8, pady=(8, 0))
+        self.gantt_canvas.pack(fill="both", expand=True, padx=8, pady=(8, 0))
 
         gsc = ttk.Scrollbar(gantt_card, orient="horizontal",
                             command=self.gantt_canvas.xview)
         gsc.pack(fill="x", padx=8, pady=(0, 8))
         self.gantt_canvas.configure(xscrollcommand=gsc.set)
 
-        # ── Table Section ──
-        tk.Label(right, text="RESULTS TABLE", bg=BG, fg=MUTED,
-                 font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
+        # TABLE SECTION
+        tk.Label(right, text="RESULTS TABLE", bg=BG, fg="gray",
+                 font=("Consolas", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
-        table_card = tk.Frame(right, bg=CARD)
+        table_card = tk.Frame(right, bg=sectionsBG)
         table_card.pack(fill="both", expand=True)
 
-        # Inner frame for treeview + scrollbar side by side
-        tree_frame = tk.Frame(table_card, bg=CARD)
+        # Inner frame for SCROLLBAR
+        tree_frame = tk.Frame(table_card, bg=sectionsBG)
         tree_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
+        #Label for Results Table
         cols = ("pid", "at", "bt", "priority", "finish", "tat", "wt")
         self.tree = ttk.Treeview(tree_frame, columns=cols,
                                   show="headings", selectmode="none")
-        heads = [("pid","PID",60),("at","Arrival",70),("bt","Burst",60),
+        heads = [("pid","PID",60),("at","AT",70),("bt","BT",60),
                  ("priority","Priority",70),("finish","Finish",70),
                  ("tat","TAT",70),("wt","WT",70)]
         for col, label, width in heads:
@@ -637,41 +604,30 @@ class MainApp(tk.Tk):
 
         self.tree.tag_configure("alt", background="#1e2235")
 
-        self._draw_placeholder()
+        self.initializeGantt()
 
-    # ── Helper widgets ───────────────────────────
+    # Helpers
     def sectionLabel(self, parent, text, pady=(0,4), side=None):
         lbl = tk.Label(parent, text=text,
-                       bg=BG, fg=MUTED, font=("Segoe UI", 8, "bold"))
+                       bg=BG, fg=fontColor, font=("Segoe UI", 8, "bold"))
         lbl.pack(fill="x", pady=pady, anchor="w")
         return lbl
 
     #button template
-    def buttonTemplate(self, parent, text, cmd, fg=TEXT, bg=CARD, font=("Segoe UI", 9)):
+    def buttonTemplate(self, parent, text, cmd, fg=fontColor, bg=sectionsBG, font=("Segoe UI", 9)):
         return tk.Button(
-            parent,
-            text=text,
-            fg=fg,
-            font=font,  # now dynamic
-            relief="flat",
-            cursor="hand2",
-            activebackground=bg,
-            activeforeground=fg,
-            command=cmd,
-            bg=bg,
-            padx=8,
-            pady=4
-        )
+            parent, text=text, fg=fg,font=font, relief="flat", cursor="hand2", activebackground=bg, activeforeground=fg,
+            command=cmd, bg=bg, padx=8, pady=4)
         
 
     def _stat_card(self, parent, title, value, subtitle):
-        f = tk.Frame(parent, bg=CARD, pady=8)
-        tk.Label(f, text=title, bg=CARD, fg=MUTED,
+        f = tk.Frame(parent, bg=sectionsBG, pady=8)
+        tk.Label(f, text=title, bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 8, "bold")).pack()
-        val_lbl = tk.Label(f, text=value, bg=CARD, fg=ACCENT2,
+        val_lbl = tk.Label(f, text=value, bg=sectionsBG, fg="#22C55E" ,
                            font=("Segoe UI", 20, "bold"))
         val_lbl.pack()
-        tk.Label(f, text=subtitle, bg=CARD, fg=MUTED,
+        tk.Label(f, text=subtitle, bg=sectionsBG, fg=fontColor,
                  font=("Segoe UI", 8)).pack()
         f._val_lbl = val_lbl
         return f
@@ -679,23 +635,24 @@ class MainApp(tk.Tk):
     def _update_stat(self, card, value):
         card._val_lbl.config(text=value)
 
-    # ── Process rows ─────────────────────────────
-    def _add_process_row(self):
+    # Adding Process Function
+    def addProcessFunction(self):
         idx = len(self.proc_rows)
         pid = f"P{idx+1}"
         row = tk.Frame(self.proc_frame, bg=BG)
         row.pack(fill="x", pady=5)
  
-        # Color swatch
+        # Random Color Selection
         color = processColors[idx % len(processColors)]
         tk.Label(row, text="█", bg=BG, fg=color,
                  font=("Segoe UI", 12), width=2).pack(side="left")
  
-        at_v  = tk.StringVar(value="0") #inital values
+        #Initial Values
+        at_v  = tk.StringVar(value="0") 
         bt_v  = tk.StringVar(value="1")
-        pri_v = tk.StringVar(value="1")
+        pri_v = tk.StringVar(value="0")
  
-        pid_lbl = tk.Label(row, text=pid, bg=CARD, fg=TEXT,
+        pid_lbl = tk.Label(row, text=pid, bg=sectionsBG, fg=fontColor,
                            font=("Consolas", 10, "bold"), width=4)
         pid_lbl.pack(side="left")
 
@@ -703,11 +660,11 @@ class MainApp(tk.Tk):
         entries = []
         for var, w in [(at_v,5),(bt_v,5),(pri_v,5)]:
             e = tk.Entry(row, textvariable=var, width=w+2,
-                         bg=PANEL, fg=TEXT, insertbackground=TEXT,
-                         relief="flat", font=("Consolas", 10),
+                         bg=lighterBG, fg=fontColor, insertbackground=fontColor,
+                         relief="flat", font=("Consolas", 11, "bold"),
                          highlightthickness=1,
-                         highlightbackground=BORDER,
-                         highlightcolor=ACCENT)
+                         highlightbackground="#CFE3D0",
+                         highlightcolor="#16A34A")
             e.pack(side="left", padx=13)
             entries.append(e)
  
@@ -718,51 +675,36 @@ class MainApp(tk.Tk):
  
         self.proc_rows.append((pid, at_v, bt_v, pri_v, row))
         
-            
-        tk.Button(
-            row,
-            text="─",
-            fg=ERROR,
-            bg=BG,
-            bd=0,
-            padx=20,
-            cursor="hand2",
-            command=lambda r=row, item=(pid, at_v, bt_v, pri_v, row): 
-                self._remove_process(r, item)
-        ).pack(side="right", padx=5)
-    
-    
-    def _remove_process(self, r, item):
-        if len(self.proc_rows) <= 3:
-            messagebox.showwarning("Minimum", "At least 3 processes required.")
-            return
 
+        tk.Button(row, text="🗑️", fg="#DC2626", bg=BG, bd=0, padx=20, cursor="hand2", command=lambda r=row, item=(pid, at_v, bt_v, pri_v, row): 
+            self.removeProcess(r, item)).pack(side="right", padx=5)
+    
+    # function for removing process
+    def removeProcess(self, r, item):
+        if len(self.proc_rows) <= 3:
+            messagebox.showwarning("Minimum", "Cannot Delete! At least 3 processes required.")
+            return
         r.destroy()
         self.proc_rows.remove(item)
 
-    # remove process
-    # def _remove_last_row(self):
-    #     if len(self.proc_rows) <= 3:
-    #         messagebox.showwarning("Minimum", "At least 3 processes required.")
-    #         return
-    #     _, _, _, _, row = self.proc_rows.pop()
-    #     row.destroy()
-    
-    #reset all process
-    def _reset_processes(self):
+    # function for reseting all process
+    def resetProcess(self):
+        self.statusDot.configure(fg=fontColor)
+        self.statusLabel.configure(text="Status: Idle", fg=fontColor)
+        
         # destroy all existing rows
         for _, _, _, _, row in self.proc_rows:
             row.destroy()
  
-        # clear the list
+        # clear the process list
         self.proc_rows.clear()
  
         # recreate initial 3 processes (default values)
         for i in range(3):
-            self._add_process_row()
- 
+            self.addProcessFunction()
+    
         # reset Gantt chart
-        self._draw_placeholder()
+        self.initializeGantt()
  
         # reset summary stats
         self._update_stat(self.averageTATContainer, "—")
@@ -774,17 +716,17 @@ class MainApp(tk.Tk):
         for item in self.tree.get_children():
             self.tree.delete(item)
         
-        #reset the process input
+        # reset the process input
         self.numberProcessValue.set(3)
         
-        #reset the algorithm chose
+        # reset the algorithm chose
         self.algoSelected.set("FCFS")
         self.priorityContainer.pack_forget()
         self.quantumContainer.pack_forget()
         
 
-    # generate N initial processes from user input
-    def _generate_processes(self):
+    # generate process function based from user input
+    def generateProcessFunctioj(self):
         try:
             n = int(self.numberProcessValue.get())
             if n < 3:
@@ -793,56 +735,58 @@ class MainApp(tk.Tk):
             messagebox.showerror("Input Error", "Please enter a valid number of processes (≥ 3).")
             return
 
-    
-        # destroy all existing rows
+        # delete all existing rows process
         for _, _, _, _, row in self.proc_rows:
             row.destroy()
         self.proc_rows.clear()
 
-        # add N fresh rows
+        # add new rows
         for _ in range(n):
-            self._add_process_row()
+            self.addProcessFunction()
 
-    # clear process
-    def _clear_all_process(self):
-        print("ROWS:", self.proc_rows)
-        
+    # clear process values function
+    def clearValuesFunction(self):
         for _, pid_v, at_v, bt_v, _ in self.proc_rows:
             pid_v.set(0)
             at_v.set(1)
-            bt_v.set(1)
+            bt_v.set(0)
             
-        # self.proc_rows.clear()
-        
 
-    # ── Algorithm options visibility ─────────────
+    # Algorithm Visibility
     def changeAlgo(self, _=None):
         algo = self.algoSelected.get()
-        needs_quantum   = algo in ("Round Robin", "Priority + RR", "Run All")
-        needs_pri_dir   = algo in ("Priority (NP)", "Priority (P)", "Priority + RR", "Run All")
+        involvesQuantum   = algo in ("Round Robin", "Priority + RR", "Run All")
+        involvesPriority   = algo in ("Priority (NP)", "Priority (P)", "Priority + RR", "Run All")
 
-        if needs_quantum:
-            self.quantumContainer.pack(fill="x", padx=10, pady=(4,0))
+        if involvesQuantum:
+            self.quantumContainer.pack(fill="x", padx=10, pady=(4,0)) # if needs quantum, this section shows
         else:
-            self.quantumContainer.pack_forget()
+            self.quantumContainer.pack_forget() #if not, it will hide
 
-        if needs_pri_dir:
-            self.priorityContainer.pack(fill="x", padx=10, pady=(4,8))
+        if involvesPriority:
+            self.priorityContainer.pack(fill="x", padx=10, pady=(4,8)) # if needs ppriority, this section shows
         else:
-            self.priorityContainer.pack_forget()
-            self.quantumContainer.pack_configure(pady=(4,8)) if needs_quantum else None
+            self.priorityContainer.pack_forget() #if not, it will hide
+            self.quantumContainer.pack_configure(pady=(4,8)) if involvesQuantum else None 
 
-    # ── Run ──────────────────────────────────────
-    def _run_simulation(self):
+    # Run application function
+    def runApp(self):
+        self.statusDot.configure(fg="green")
+        self.statusLabel.configure(text="Status: Running", fg="green")
+        self.update_idletasks()
+        
         # Parse processes
         processes = []
-        for i, (pid, at_v, bt_v, pri_v, _) in enumerate(self.proc_rows):
+        
+        for i, (pid, at_v, bt_v, pri_v, _) in enumerate(self.proc_rows): # loop in process list to get all process
             try:
                 at  = int(at_v.get())
                 bt  = int(bt_v.get())
                 pri = int(pri_v.get())
                 if bt <= 0: raise ValueError
             except ValueError:
+                self.statusDot.configure(fg=fontColor)
+                self.statusLabel.configure(text="Status: Idle", fg=fontColor)
                 messagebox.showerror("Input Error",
                     f"{pid}: All fields must be integers, Burst Time > 0.")
                 return
@@ -852,52 +796,52 @@ class MainApp(tk.Tk):
 
         algo    = self.algoSelected.get()
         quantum = self.quantumValue.get()
-        hib     = self.priorityValue.get() == "Higher = Higher Priority"
+        defaultPriority     = self.priorityValue.get() == "Higher = Higher Priority" # Default Value:Higher number = Highest Priority
 
         # Assign colors
         self.color_map = {p["pid"]: processColors[i % len(processColors)]
                           for i, p in enumerate(processes)}
 
-        # Run selected algorithm(s)
+        # Run based on chosen algorithm
         if algo == "FCFS":
             gantt, results = solveFCFS(processes)
-            self._display(gantt, results, "First-Come, First-Served")
+            self.showOutputs(gantt, results, "First-Come, First-Served")  # if FCFS is chosen
 
         elif algo == "SJF":
             gantt, results = solveSJF(processes)
-            self._display(gantt, results, "Shortest Job First (NP)")
+            self.showOutputs(gantt, results, "Shortest Job First (NP)")  # if SJF is chosen
 
         elif algo == "SRT":
             gantt, results = solveSRT(processes)
-            self._display(gantt, results, "Shortest Remaining Time")
-
+            self.showOutputs(gantt, results, "Shortest Remaining Time")  # if SRT is chosen
+ 
         elif algo == "Round Robin":
             gantt, results = solveRoundRobin(processes, quantum)
-            self._display(gantt, results, f"Round Robin (q={quantum})")
-
+            self.showOutputs(gantt, results, f"Round Robin (q={quantum})")  # if RR is chosen
+ 
         elif algo == "Priority (NP)":
-            gantt, results = run_priority_np(processes, hib)
-            mode = "High>Hi" if hib else "Low>Hi"
-            self._display(gantt, results, f"Priority NP ({mode})")
+            gantt, results = run_priority_np(processes, defaultPriority)  # if PRIORITY NP is chosen
+            mode = "High>Hi" if defaultPriority else "Low>Hi"
+            self.showOutputs(gantt, results, f"Priority NP ({mode})")
 
-        elif algo == "Priority (P)":
-            gantt, results = run_priority_p(processes, hib)
-            mode = "High>Hi" if hib else "Low>Hi"
-            self._display(gantt, results, f"Priority Preemptive ({mode})")
+        elif algo == "Priority (P)": 
+            gantt, results = run_priority_p(processes, defaultPriority)  # if PRIORITY P is chosen
+            mode = "High>Hi" if defaultPriority else "Low>Hi"
+            self.showOutputs(gantt, results, f"Priority Preemptive ({mode})")
 
         elif algo == "Priority + RR":
-            gantt, results = run_priority_rr(processes, quantum, hib)
-            mode = "High>Hi" if hib else "Low>Hi"
-            self._display(gantt, results, f"Priority+RR q={quantum} ({mode})")
+            gantt, results = run_priority_rr(processes, quantum, defaultPriority)  # if PRIOTIY  W RR is chosen
+            mode = "High>Hi" if defaultPriority else "Low>Hi" 
+            self.showOutputs(gantt, results, f"Priority+RR q={quantum} ({mode})")
 
         elif algo == "Run All":
-            # Run all and show combined in a new window
-            self._run_all(processes, quantum, hib)
+            self.runAllAlgorithm(processes, quantum, defaultPriority)  # Run all and show combined in a new window
 
-    def _display(self, gantt, results, title):
-        self._draw_gantt(gantt)
+    # function for displaying gantt chart,result table, and summary
+    def showOutputs(self, gantt, results, title):
+        self.buildGanttChart(gantt) 
         self._fill_table(results)
-        n     = len(results)
+        n = len(results)
         avg_tat = sum(r["tat"] for r in results) / n
         avg_wt  = sum(r["wt"]  for r in results) / n
         self._update_stat(self.averageTATContainer, f"{avg_tat:.2f}")
@@ -905,91 +849,113 @@ class MainApp(tk.Tk):
         self._update_stat(self.algoUsed, f"{self.algoSelected.get()}")
         self._update_stat(self.processCount, f"{n}")
 
-    # ── Gantt Chart ──────────────────────────────
-    def _draw_placeholder(self):
+    # Iniatilize Gantt Chart
+    def initializeGantt(self):
         c = self.gantt_canvas
         c.delete("all")
         c.create_text(400, 80,
-                      text="-",
-                      fill=MUTED, font=("Segoe UI", 11), anchor="center")
+                      text="",
+                      fill=fontColor, font=("Segoe UI", 11), anchor="center")
 
-    def _draw_gantt(self, gantt):
+    # Build Gantt Chart
+    def buildGanttChart(self, gantt):
         c = self.gantt_canvas
-        c.delete("all")
+        c.delete("all")  # Clear previous drawings on the canvas
+        
+        # If no data, nothing to draw
         if not gantt:
             return
 
-        BLOCK_H  = 44
-        LABEL_H  = 24
-        TIMELINE = 18
-        TOP      = 20
-        PX_PER_T = 38  # pixels per time unit
+        # Constants Value for layout
+        BLOCK_H  = 44      
+        LABEL_H  = 24      
+        TIMELINE = 18      
+        TOP      = 20      
+        PX_PER_T = 50      
 
+        # Get total time from last segment
         total_end = gantt[-1]["end"]
+
+        # Set canvas width 
         canvas_w  = max(total_end * PX_PER_T + 80, 600)
+
+        # Define scrollable area of canvas
         c.configure(scrollregion=(0, 0, canvas_w, BLOCK_H + LABEL_H + TIMELINE + TOP + 30))
 
-        # Timeline ticks
         for t in range(total_end + 1):
-            x = 40 + t * PX_PER_T
-            c.create_line(x, TOP + BLOCK_H, x, TOP + BLOCK_H + 6,
-                          fill=MUTED, width=1)
-            c.create_text(x, TOP + BLOCK_H + TIMELINE,
-                          text=str(t), fill=MUTED,
-                          font=("Consolas", 8), anchor="center")
+            x = 40 + t * PX_PER_T  # Convert time → pixel position
 
-        # Blocks
+            # Small vertical tick line
+            c.create_line( x, TOP + BLOCK_H, x, TOP + BLOCK_H + 6, fill=fontColor, width=1)
+
+            # Time label below the tick
+            c.create_text(x, TOP + BLOCK_H + TIMELINE, text=str(t), fill=fontColor, font=("Consolas", 8), anchor="center")
+
+        # Draw Gantt Chart BLOCKS
         for seg in gantt:
+            # Convert start/end time → pixel positions
             x1 = 40 + seg["start"] * PX_PER_T
             x2 = 40 + seg["end"]   * PX_PER_T
+
             y1 = TOP
             y2 = TOP + BLOCK_H
-            pid   = seg["pid"]
-            color = self.color_map.get(pid, ACCENT)
 
-            # Block
-            c.create_rectangle(x1, y1, x2, y2,
-                                fill=color, outline=BG, width=2)
-            # Label
-            bw = x2 - x1
-            if bw > 20:
-                c.create_text((x1+x2)//2, (y1+y2)//2,
-                              text=pid, fill="white",
-                              font=("Segoe UI", 9, "bold"), anchor="center")
+            pid   = seg["pid"]                     # Process ID (e.g., P1)
+            color = self.color_map.get(pid, "#16A34A")  # Color per process
 
-        # CPU bar label
-        c.create_text(32, TOP + BLOCK_H//2,
-                      text="CPU", fill=MUTED,
-                      font=("Segoe UI", 8, "bold"), anchor="e")
+            # Draw rectangle block for this segment
+            c.create_rectangle(x1, y1, x2, y2, fill=color, outline=BG,width=2)
 
-    # ── Results Table ────────────────────────────
+            # Draw process label inside block 
+            bw = x2 - x1  
+            if bw > 20:   
+                c.create_text(
+                    (x1 + x2) // 2,
+                    (y1 + y2) // 2,
+                    text=pid,
+                    fill="white",
+                    font=("Segoe UI", 9, "bold"),
+                    anchor="center"
+                )
+
+        # Draw "CPU" label on the left side
+        c.create_text(32, TOP + BLOCK_H // 2, text="CPU", fill=fontColor, font=("Segoe UI", 8, "bold"), anchor="e")
+     
+    #End of Gantt Chartt 
+        
+    # Results Table Section
     def _fill_table(self, results):
-        for item in self.tree.get_children():
+        
+        for item in self.tree.get_children(): #clear existing rows in the table
             self.tree.delete(item)
-        for i, r in enumerate(results):
-            tag = ("alt",) if i % 2 else ()
-            self.tree.insert("", "end", values=(
-                r["pid"], r["at"], r["bt"], r["priority"],
-                r["finish"], r["tat"], r["wt"]
-            ), tags=tag)
+            
+        for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))): #insert new sorted rows
+            
+            tag = ("alt",) if i % 2 else () #alternate color for each row
+            
+            self.tree.insert("", "end", values=(r["pid"], r["at"], r["bt"], r["priority"],r["finish"], r["tat"], r["wt"]), tags=tag) #inserts to table
+            
             # Color the PID cell using a tag
             pid_tag = f"pid_{r['pid']}"
-            color = self.color_map.get(r["pid"], ACCENT)
-            self.tree.tag_configure(pid_tag, foreground=color)
+            color = self.color_map.get(r["pid"] , "white")
+            self.tree.tag_configure(pid_tag, foreground="#1a1a1a")
+            self.tree.tag_configure("alt", background="#E8F5E8", foreground="#1B4332")
+            self.tree.tag_configure("", background="#FFFFFF", foreground="#1a1a1a")   
 
-    # ── Run All window ───────────────────────────
-    def _run_all(self, processes, quantum, hib):
-        win = tk.Toplevel(self)
-        win.title("All Algorithms — Comparison")
-        win.configure(bg=BG)
-        win.geometry("1100x750")
+    # Function when Run All Algorithm is Selected
+    def runAllAlgorithm(self, processes, quantum, defaultPriority):
+        #initialize new window for all algorithm
+        allAlgoWindow = tk.Toplevel(self)
+        allAlgoWindow.title("All Algorithms — Comparison")
+        allAlgoWindow.configure(bg=BG)
+        allAlgoWindow.geometry("1100x750")
 
-        tk.Label(win, text="All Algorithms Comparison",
-                 bg=BG, fg=TEXT, font=("Segoe UI", 16, "bold")).pack(pady=(16,4))
-        tk.Frame(win, bg=BORDER, height=1).pack(fill="x", padx=24)
+        tk.Label(allAlgoWindow, text="All Algorithms Comparison",
+                 bg=BG, fg=fontColor, font=("Segoe UI", 16, "bold")).pack(pady=(16,4))
+        tk.Frame(allAlgoWindow, bg="#CFE3D0", height=1).pack(fill="x", padx=24)
 
         # Scrollable canvas
-        outer = tk.Frame(win, bg=BG)
+        outer = tk.Frame(allAlgoWindow, bg=BG)
         outer.pack(fill="both", expand=True, padx=16, pady=8)
         outer.rowconfigure(0, weight=1)
         outer.columnconfigure(0, weight=1)
@@ -1008,15 +974,15 @@ class MainApp(tk.Tk):
         content.bind("<Configure>", _resize)
         canvas.bind("<Configure>", lambda e: canvas.itemconfig(cwin, width=e.width))
 
-        mode = "High>Hi" if hib else "Low>Hi"
+        mode = "High>Hi" if defaultPriority else "Low>Hi"
         listOfAlgo = [
             ("FCFS",                       solveFCFS(processes)),
             ("SJF (Non-Preemptive)",        solveSJF(processes)),
             ("SRT (Preemptive)",            solveSRT(processes)),
             (f"Round Robin (q={quantum})",  solveRoundRobin(processes, quantum)),
-            (f"Priority NP ({mode})",       run_priority_np(processes, hib)),
-            (f"Priority P ({mode})",        run_priority_p(processes, hib)),
-            (f"Priority+RR q={quantum} ({mode})", run_priority_rr(processes, quantum, hib)),
+            (f"Priority NP ({mode})",       run_priority_np(processes, defaultPriority)),
+            (f"Priority P ({mode})",        run_priority_p(processes, defaultPriority)),
+            (f"Priority+RR q={quantum} ({mode})", run_priority_rr(processes, quantum, defaultPriority)),
         ]
 
         for name, (gantt, results) in listOfAlgo:
@@ -1024,68 +990,69 @@ class MainApp(tk.Tk):
             avg_tat = sum(r["tat"] for r in results) / n
             avg_wt  = sum(r["wt"]  for r in results) / n
 
-            sec = tk.Frame(content, bg=CARD)
-            sec.pack(fill="x", pady=6, padx=4)
+            sec = tk.Frame(content, bg=sectionsBG)
+            sec.pack(fill="x", expand=True, pady=6, padx=4)
 
             # Header
-            hf = tk.Frame(sec, bg=BORDER)
+            hf = tk.Frame(sec, bg="#CFE3D0")
             hf.pack(fill="x")
-            tk.Label(hf, text=f"  {name}", bg=BORDER, fg=TEXT,
+            tk.Label(hf, text=f"  {name}", bg="#CFE3D0", fg=fontColor,
                      font=("Segoe UI", 11, "bold"), pady=6).pack(side="left")
             tk.Label(hf, text=f"Avg TAT: {avg_tat:.2f}  |  Avg WT: {avg_wt:.2f}  ",
-                     bg=BORDER, fg=ACCENT2,
+                     bg="#CFE3D0", fg=fontColor ,
                      font=("Segoe UI", 10)).pack(side="right")
 
-            # Mini Gantt
-            mini = tk.Canvas(sec, bg=CARD, height=80, highlightthickness=0)
-            mini.pack(fill="x", padx=8, pady=6)
-            self._draw_mini_gantt(mini, gantt)
+            # Mini Gantt Chart
+            mini = tk.Canvas(sec, bg=sectionsBG, height=80, highlightthickness=0)
+            mini.pack(fill="x", expand=True, padx=8, pady=6)
+            self.buildAllAlgoGanttChart(mini, gantt)
 
-            # Mini table
+            # Mini Table Summary
             cols = ("pid","at","bt","finish","tat","wt")
             tr = ttk.Treeview(sec, columns=cols, show="headings",
                               height=len(results), selectmode="none")
             for col, lbl, w in [("pid","PID",50),("at","AT",60),("bt","BT",55),
                                   ("finish","Finish",65),("tat","TAT",60),("wt","WT",60)]:
                 tr.heading(col, text=lbl); tr.column(col, width=w, anchor="center")
-            for i, r in enumerate(results):
+            for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
                 tag = ("alt",) if i%2 else ()
                 tr.insert("", "end", values=(r["pid"],r["at"],r["bt"],
                                               r["finish"],r["tat"],r["wt"]), tags=tag)
-            tr.tag_configure("alt", background="#1e2235")
+            tr.tag_configure("alt", background="#E8F5E8", foreground="#1a1a1a")
+            tr.tag_configure("", background="#FFFFFF", foreground="#1a1a1a")
             tr.pack(fill="x", padx=8, pady=(0,8))
 
-    def _draw_mini_gantt(self, canvas, gantt):
+    #function for building gantt chart for all algo
+    def buildAllAlgoGanttChart(self, canvas, gantt):
         """Compact Gantt for the Run All window."""
         canvas.update_idletasks()
-        W = canvas.winfo_width() or 900
-        total = gantt[-1]["end"] if gantt else 1
-        scale = (W - 60) / total
-        BH, TOP = 28, 14
+        W = canvas.winfo_width() 
+        if W <= 1:
+             W = 900  # fallback WIDTH
 
+        total = gantt[-1]["end"] if gantt else 1
+        scale = max(40, (W - 80) / total)
+        BH, TOP = 28, 14
         for seg in gantt:
             x1 = 40 + seg["start"] * scale
             x2 = 40 + seg["end"]   * scale
             pid   = seg["pid"]
-            color = self.color_map.get(pid, ACCENT)
+            color = self.color_map.get(pid, "#16A34A")
             canvas.create_rectangle(x1, TOP, x2, TOP+BH,
                                     fill=color, outline=BG, width=1)
             if (x2-x1) > 16:
                 canvas.create_text((x1+x2)/2, TOP+BH/2,
                                    text=pid, fill="white",
                                    font=("Segoe UI", 8, "bold"))
-        # ticks
         for seg in gantt:
             for t in [seg["start"], seg["end"]]:
                 x = 40 + t * scale
-                canvas.create_line(x, TOP+BH, x, TOP+BH+6, fill=MUTED)
+                canvas.create_line(x, TOP+BH, x, TOP+BH+6, fill=fontColor)
                 canvas.create_text(x, TOP+BH+13, text=str(t),
-                                   fill=MUTED, font=("Consolas", 7))
+                                   fill=fontColor, font=("Consolas", 7))
 
 
-# ─────────────────────────────────────────────
-#  Entry point
-# ─────────────────────────────────────────────
+# MAIN APP ENTRY POINT
 if __name__ == "__main__":
     app = MainApp()
     app.mainloop()

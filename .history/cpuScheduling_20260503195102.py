@@ -966,7 +966,7 @@ class MainApp(tk.Tk):
     def _fill_table(self, results):
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for i, r in enumerate(results):
+        for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
             tag = ("alt",) if i % 2 else ()
             self.tree.insert("", "end", values=(
                 r["pid"], r["at"], r["bt"], r["priority"],
@@ -1048,7 +1048,7 @@ class MainApp(tk.Tk):
             for col, lbl, w in [("pid","PID",50),("at","AT",60),("bt","BT",55),
                                   ("finish","Finish",65),("tat","TAT",60),("wt","WT",60)]:
                 tr.heading(col, text=lbl); tr.column(col, width=w, anchor="center")
-            for i, r in enumerate(results):
+            for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
                 tag = ("alt",) if i%2 else ()
                 tr.insert("", "end", values=(r["pid"],r["at"],r["bt"],
                                               r["finish"],r["tat"],r["wt"]), tags=tag)

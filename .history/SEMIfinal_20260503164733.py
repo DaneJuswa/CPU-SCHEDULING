@@ -1,4 +1,3 @@
-#final
 import copy
 import tkinter as tk
 from tkinter import ttk, messagebox, font as tkfont
@@ -392,7 +391,7 @@ class MainApp(tk.Tk):
         rightSideHeader.pack(side="right")
         
         # Reset button
-        self.buttonTemplate(rightSideHeader, "↺ RESET", self._reset_processes,
+        self._flat_btn(rightSideHeader, "↺ RESET", self._reset_processes,
                     fg="white", font=("Segoe UI", 10, "bold"), bg=ERROR).pack(side="left", padx=(8, 0))
         
         # Run button
@@ -446,44 +445,44 @@ class MainApp(tk.Tk):
                                        values=listOfAlgo, state="readonly",
                                        font=("Segoe UI", 10), width=22)
         self.algoComboBox.pack(fill="x")
-        self.algoComboBox.bind("<<ComboboxSelected>>", self.changeAlgo)
+        self.algoComboBox.bind("<<ComboboxSelected>>", self._on_algo_change)
 
-        # Quantum Part (visible in RR-based Algorithm)
-        self.quantumContainer = tk.Frame(algoContainer, bg=CARD)
-        tk.Label(self.quantumContainer, text="Time Quantum", bg=CARD, fg=TEXT,
+        # Quantum row (shown for RR-based)
+        self.quantum_frame = tk.Frame(algoContainer, bg=CARD)
+        tk.Label(self.quantum_frame, text="Time Quantum", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
-        self.quantumValue = tk.IntVar(value=2)
-        ttk.Spinbox(self.quantumContainer, from_=1, to=99,
-                    textvariable=self.quantumValue, width=5,
+        self.quantum_var = tk.IntVar(value=2)
+        ttk.Spinbox(self.quantum_frame, from_=1, to=99,
+                    textvariable=self.quantum_var, width=5,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8,0))
 
-        # Priority Part
-        self.priorityContainer = tk.Frame(algoContainer, bg=CARD)
-        tk.Label(self.priorityContainer, text="Priority Value", bg=CARD, fg=TEXT,
+        # Priority direction row
+        self.pri_dir_frame = tk.Frame(algoContainer, bg=CARD)
+        tk.Label(self.pri_dir_frame, text="Priority Direction", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
-        self.priorityValue = tk.StringVar(value="Lower = Higher")
-        ttk.Combobox(self.priorityContainer, textvariable=self.priorityValue,
+        self.pri_dir_var = tk.StringVar(value="Lower = Higher")
+        ttk.Combobox(self.pri_dir_frame, textvariable=self.pri_dir_var,
                      values=["Lower = Higher Priority","Higher = Higher Priority"],
                      state="readonly", width=22,
                      font=("Segoe UI", 9)).pack(side="left", padx=(8,0))
 
-        self.changeAlgo()  # set initial visibility
+        self._on_algo_change()  # set initial visibility
 
         
-        # Initial Number of Process Input
-        numberProcessContainer = tk.Frame(outerContainer, bg=CARD)
-        numberProcessContainer.pack(fill="x", padx=10, pady=10)
+        # ── Initial Processes input ──
+        num_proc_row = tk.Frame(outerContainer, bg=CARD)
+        num_proc_row.pack(fill="x", padx=10, pady=10)
 
-        tk.Label(numberProcessContainer, text="Number of Processes:",
+        tk.Label(num_proc_row, text="Initial Processes:",
                  bg=CARD, fg=MUTED,
                  font=("Segoe UI", 9)).pack(side="left")
 
-        self.numberProcessValue = tk.IntVar(value=3)
-        ttk.Spinbox(numberProcessContainer,
-                    textvariable=self.numberProcessValue, width=40,
+        self.num_proc_var = tk.IntVar(value=3)
+        ttk.Spinbox(num_proc_row,
+                    textvariable=self.num_proc_var, width=40,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8, 6))
 
-        tk.Button(numberProcessContainer, text="Generate",
+        tk.Button(num_proc_row, text="Generate",
                   bg=ACCENT, fg="white",
                   font=("Segoe UI", 9, "bold"),
                   relief="flat", cursor="hand2",
@@ -492,44 +491,69 @@ class MainApp(tk.Tk):
                   padx=8, pady=2,
                   command=self._generate_processes).pack(side="right")
         
-        # Process Label and Generate Section
-        ProcessAndButtonLabel = tk.Frame(outerContainer, bg=CARD)
-        ProcessAndButtonLabel.pack(fill="x", padx=10, pady=(8, 2))
+        # ── Processes label + buttons (inside pink container) ──
+        proc_header = tk.Frame(outerContainer, bg=CARD)
+        proc_header.pack(fill="x", padx=10, pady=(8, 2))
 
-        tk.Label(ProcessAndButtonLabel, text="PROCESSES",
+        tk.Label(proc_header, text="PROCESSES",
                  bg=CARD, fg=TEXT,
                  font=("Segoe UI", 8, "bold")).pack(side="left")
 
-        btn_row = tk.Frame(ProcessAndButtonLabel, bg=CARD)
+        btn_row = tk.Frame(proc_header, bg=CARD)
         btn_row.pack(side="right")
 
-        self.buttonTemplate(btn_row, "ADD PROCESS", self._add_process_row, #Add Process Button
+        self._flat_btn(btn_row, "ADD PROCESS", self._add_process_row,
                     fg="white", bg=ACCENT).pack(side="left")
-        
-        self.buttonTemplate(btn_row, "CLEAR VALUES", self._clear_all_process, #Clear Values Button
+        self._flat_btn(btn_row, "CLEAR VALUES", self._clear_all_process,
                     fg=ACCENT, bg=TEXT).pack(side="left", padx=(8, 0))
         
-        
-        # PROCESS CONTAINER
-        inputProcessContainer = tk.Frame(outerContainer, bg=BG, bd=0)
-        inputProcessContainer.pack(fill="x", padx=10, pady=10)
+        # self._flat_btn(btn_row, "RESET", self._reset_processes,
+        #             fg=ERROR, bg=TEXT).pack(side="left", padx=(8, 0))
 
-        # COLUMN HEADER TITLE FOR PROCESS (PID, AT, BT, PRIO)
-        hdr = tk.Frame(inputProcessContainer, bg=BG)
+        # # ── Number of Initial Processes input ──
+        # num_proc_row = tk.Frame(outerContainer, bg=CARD)
+        # num_proc_row.pack(fill="x", padx=10, pady=(2, 6))
+
+        # tk.Label(num_proc_row, text="Initial Processes:",
+        #          bg=CARD, fg=MUTED,
+        #          font=("Segoe UI", 9)).pack(side="left")
+
+        # self.num_proc_var = tk.IntVar(value=3)
+        # ttk.Spinbox(num_proc_row,
+        #             textvariable=self.num_proc_var, width=4,
+        #             font=("Segoe UI", 10)).pack(side="left", padx=(8, 6))
+
+        # tk.Button(num_proc_row, text="Generate",
+        #           bg=ACCENT, fg="white",
+        #           font=("Segoe UI", 9, "bold"),
+        #           relief="flat", cursor="hand2",
+        #           activebackground="#4e6832",
+        #           activeforeground="white",
+        #           padx=8, pady=2,
+        #           command=self._generate_processes).pack(side="left")
+
+        # ================= PROCESS TABLE =================
+
+        # main card for process
+        proc_card = tk.Frame(outerContainer, bg=BG, bd=0)
+        proc_card.pack(fill="x", padx=10, pady=10)
+
+        # column header row
+        hdr = tk.Frame(proc_card, bg=BG)
         hdr.pack(fill="x", padx=70, pady=10)
         for col, w, txt in [("PID",7,"PID"),("Arrival Time",10,"Arrival Time"),("Burst Time",10,"Burst Time"),("Priority",10,"Priority"),("",3,"")]:
             tk.Label(hdr, text=txt, bg=BG, fg=TEXT,
                      font=("Segoe UI", 8, "bold"), width=w, anchor="center").pack(side="left")
 
-        # Scrollable Section IN PROCESS CONTAINER
-        scrollableSection = tk.Frame(inputProcessContainer, bg=BG)
-        scrollableSection.pack(fill="x", padx=10, pady=(0, 10))
+        # Scrollable process rows — canvas + scrollbar
+        scroll_container = tk.Frame(proc_card, bg=BG)
+        scroll_container.pack(fill="x", padx=10, pady=(0, 10))
 
-        self._proc_canvas = tk.Canvas(scrollableSection, bg=BG,
+        self._proc_canvas = tk.Canvas(scroll_container, bg=BG,
                                       highlightthickness=0, height=120)
         self._proc_canvas.pack(side="left", fill="x", expand=True, padx=(50, 0))
 
-        proc_vsb = ttk.Scrollbar(scrollableSection, orient="vertical",
+        proc_vsb = ttk.Scrollbar(scroll_container, orient="vertical",
                                   command=self._proc_canvas.yview)
         proc_vsb.pack(side="right", fill="y")
         self._proc_canvas.configure(yscrollcommand=proc_vsb.set)
@@ -550,7 +574,7 @@ class MainApp(tk.Tk):
         def _on_mousewheel(e):
             self._proc_canvas.yview_scroll(int(-1 * (e.delta / 120)), "units")
 
-        # BINDERS / CONNECTS THEM ALL
+        # binders
         self.proc_frame.bind("<Configure>", _on_proc_frame_configure)
         self._proc_canvas.bind("<Configure>", _on_proc_canvas_configure)
         self._proc_canvas.bind("<MouseWheel>", _on_mousewheel)
@@ -560,34 +584,26 @@ class MainApp(tk.Tk):
         self._add_process_row()
         self._add_process_row()
     
-        # SUMMARY TABLE SECTION
-        self.sectionLabel(left, "SUMMARY TABLE", pady=(16,4))
+        # ── Stats cards ──
+        self._section_label(left, "SUMMARY TABLE", pady=(16,4))
         stats = tk.Frame(left, bg=BG)
         stats.pack(fill="x")
         
         stats.columnconfigure(0, weight=1)
         stats.columnconfigure(1, weight=1)
 
-        #Container for Average TAT in SUMMARY SECTION
-        self.averageTATContainer = self._stat_card(stats, "Avg TAT", "—", "Turnaround Time")
-        self.averageTATContainer.grid(row=0, column=0, sticky="ew", padx=(0,6))
+        self.avg_tat_card = self._stat_card(stats, "Avg TAT", "—", "Turnaround Time")
+        self.avg_tat_card.grid(row=0, column=0, sticky="ew", padx=(0,6))
+        self.avg_wt_card  = self._stat_card(stats, "Avg WT",  "—", "Waiting Time")
+        self.avg_wt_card.grid(row=0, column=1, sticky="ew")
         
-        #Container for Average WT in SUMMARY SECTION
-        self.averageWTContainer  = self._stat_card(stats, "Avg WT",  "—", "Waiting Time")
-        self.averageWTContainer.grid(row=0, column=1, sticky="ew")
-        
-        #Container for Process Count in SUMMARY SECTION
         self.processCount = self._stat_card(stats, "Processes", "—", "Total Process")
         self.processCount.grid(row=1, column=0, sticky="ew", padx=(0,6), pady=(6,0))
         
-         #Container for Algorithm Used in SUMMARY SECTION
         self.algoUsed = self._stat_card(stats, "Algorithm", "—", "Used Method")
         self.algoUsed.grid(row=1, column=1, sticky="ew", pady=(6,0))
 
-        #END OF SUMMARY TABLE SECTION
-        
-        
-    # RIGHT SIDE OF MAIN PANEL
+    # right side
     def buildRightPanel(self, parent):
         right = tk.Frame(parent, bg=BG)
         right.grid(row=0, column=1, sticky="nsew")
@@ -640,14 +656,14 @@ class MainApp(tk.Tk):
         self._draw_placeholder()
 
     # ── Helper widgets ───────────────────────────
-    def sectionLabel(self, parent, text, pady=(0,4), side=None):
+    def _section_label(self, parent, text, pady=(0,4), side=None):
         lbl = tk.Label(parent, text=text,
                        bg=BG, fg=MUTED, font=("Segoe UI", 8, "bold"))
         lbl.pack(fill="x", pady=pady, anchor="w")
         return lbl
 
     #button template
-    def buttonTemplate(self, parent, text, cmd, fg=TEXT, bg=CARD, font=("Segoe UI", 9)):
+    def _flat_btn(self, parent, text, cmd, fg=TEXT, bg=CARD, font=("Segoe UI", 9)):
         return tk.Button(
             parent,
             text=text,
@@ -765,8 +781,8 @@ class MainApp(tk.Tk):
         self._draw_placeholder()
  
         # reset summary stats
-        self._update_stat(self.averageTATContainer, "—")
-        self._update_stat(self.averageWTContainer,  "—")
+        self._update_stat(self.avg_tat_card, "—")
+        self._update_stat(self.avg_wt_card,  "—")
         self._update_stat(self.algoUsed,     "—")
         self._update_stat(self.processCount, "—")
  
@@ -775,18 +791,18 @@ class MainApp(tk.Tk):
             self.tree.delete(item)
         
         #reset the process input
-        self.numberProcessValue.set(3)
+        self.num_proc_var.set(3)
         
         #reset the algorithm chose
         self.algoSelected.set("FCFS")
-        self.priorityContainer.pack_forget()
-        self.quantumContainer.pack_forget()
+        self.pri_dir_frame.pack_forget()
+        self.quantum_frame.pack_forget()
         
 
     # generate N initial processes from user input
     def _generate_processes(self):
         try:
-            n = int(self.numberProcessValue.get())
+            n = int(self.num_proc_var.get())
             if n < 3:
                 raise ValueError
         except (ValueError, tk.TclError):
@@ -816,21 +832,21 @@ class MainApp(tk.Tk):
         
 
     # ── Algorithm options visibility ─────────────
-    def changeAlgo(self, _=None):
+    def _on_algo_change(self, _=None):
         algo = self.algoSelected.get()
         needs_quantum   = algo in ("Round Robin", "Priority + RR", "Run All")
         needs_pri_dir   = algo in ("Priority (NP)", "Priority (P)", "Priority + RR", "Run All")
 
         if needs_quantum:
-            self.quantumContainer.pack(fill="x", padx=10, pady=(4,0))
+            self.quantum_frame.pack(fill="x", padx=10, pady=(4,0))
         else:
-            self.quantumContainer.pack_forget()
+            self.quantum_frame.pack_forget()
 
         if needs_pri_dir:
-            self.priorityContainer.pack(fill="x", padx=10, pady=(4,8))
+            self.pri_dir_frame.pack(fill="x", padx=10, pady=(4,8))
         else:
-            self.priorityContainer.pack_forget()
-            self.quantumContainer.pack_configure(pady=(4,8)) if needs_quantum else None
+            self.pri_dir_frame.pack_forget()
+            self.quantum_frame.pack_configure(pady=(4,8)) if needs_quantum else None
 
     # ── Run ──────────────────────────────────────
     def _run_simulation(self):
@@ -851,8 +867,8 @@ class MainApp(tk.Tk):
                                "finish": 0, "start": -1})
 
         algo    = self.algoSelected.get()
-        quantum = self.quantumValue.get()
-        hib     = self.priorityValue.get() == "Higher = Higher Priority"
+        quantum = self.quantum_var.get()
+        hib     = self.pri_dir_var.get() == "Higher = Higher Priority"
 
         # Assign colors
         self.color_map = {p["pid"]: processColors[i % len(processColors)]
@@ -900,8 +916,8 @@ class MainApp(tk.Tk):
         n     = len(results)
         avg_tat = sum(r["tat"] for r in results) / n
         avg_wt  = sum(r["wt"]  for r in results) / n
-        self._update_stat(self.averageTATContainer, f"{avg_tat:.2f}")
-        self._update_stat(self.averageWTContainer,  f"{avg_wt:.2f}")
+        self._update_stat(self.avg_tat_card, f"{avg_tat:.2f}")
+        self._update_stat(self.avg_wt_card,  f"{avg_wt:.2f}")
         self._update_stat(self.algoUsed, f"{self.algoSelected.get()}")
         self._update_stat(self.processCount, f"{n}")
 

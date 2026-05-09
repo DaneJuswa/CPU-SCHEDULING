@@ -392,7 +392,7 @@ class MainApp(tk.Tk):
         rightSideHeader.pack(side="right")
         
         # Reset button
-        self.buttonTemplate(rightSideHeader, "↺ RESET", self._reset_processes,
+        self.buttonTemplate(rightSideHeader, "↺ RESET", self.resetProcess,
                     fg="white", font=("Segoe UI", 10, "bold"), bg=ERROR).pack(side="left", padx=(8, 0))
         
         # Run button
@@ -448,7 +448,7 @@ class MainApp(tk.Tk):
         self.algoComboBox.pack(fill="x")
         self.algoComboBox.bind("<<ComboboxSelected>>", self.changeAlgo)
 
-        # Quantum Part (visible in RR-based Algorithm)
+        # Quantum Section (visible in RR-based Algorithm)
         self.quantumContainer = tk.Frame(algoContainer, bg=CARD)
         tk.Label(self.quantumContainer, text="Time Quantum", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
@@ -457,7 +457,7 @@ class MainApp(tk.Tk):
                     textvariable=self.quantumValue, width=5,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8,0))
 
-        # Priority Part
+        # Priority Section
         self.priorityContainer = tk.Frame(algoContainer, bg=CARD)
         tk.Label(self.priorityContainer, text="Priority Value", bg=CARD, fg=TEXT,
                  font=("Segoe UI", 9)).pack(side="left")
@@ -483,6 +483,7 @@ class MainApp(tk.Tk):
                     textvariable=self.numberProcessValue, width=40,
                     font=("Segoe UI", 10)).pack(side="left", padx=(8, 6))
 
+        # Generate Process Button
         tk.Button(numberProcessContainer, text="Generate",
                   bg=ACCENT, fg="white",
                   font=("Segoe UI", 9, "bold"),
@@ -490,7 +491,7 @@ class MainApp(tk.Tk):
                   activebackground="#4e6832",
                   activeforeground="white",
                   padx=8, pady=2,
-                  command=self._generate_processes).pack(side="right")
+                  command=self.generateProcessFunctioj).pack(side="right")
         
         # Process Label and Generate Section
         ProcessAndButtonLabel = tk.Frame(outerContainer, bg=CARD)
@@ -503,10 +504,10 @@ class MainApp(tk.Tk):
         btn_row = tk.Frame(ProcessAndButtonLabel, bg=CARD)
         btn_row.pack(side="right")
 
-        self.buttonTemplate(btn_row, "ADD PROCESS", self._add_process_row, #Add Process Button
+        self.buttonTemplate(btn_row, "ADD PROCESS", self.addProcessFunction, #Add Process Button
                     fg="white", bg=ACCENT).pack(side="left")
         
-        self.buttonTemplate(btn_row, "CLEAR VALUES", self._clear_all_process, #Clear Values Button
+        self.buttonTemplate(btn_row, "CLEAR VALUES", self.clearValuesFunction, #Clear Values Button
                     fg=ACCENT, bg=TEXT).pack(side="left", padx=(8, 0))
         
         
@@ -556,9 +557,10 @@ class MainApp(tk.Tk):
         self._proc_canvas.bind("<MouseWheel>", _on_mousewheel)
         self.proc_frame.bind("<MouseWheel>", _on_mousewheel)
 
-        self._add_process_row()
-        self._add_process_row()
-        self._add_process_row()
+        # ADD 3 PROCESS AS INITIAL INPUT
+        self.addProcessFunction()
+        self.addProcessFunction()
+        self.addProcessFunction()
     
         # SUMMARY TABLE SECTION
         self.sectionLabel(left, "SUMMARY TABLE", pady=(16,4))
@@ -592,7 +594,7 @@ class MainApp(tk.Tk):
         right = tk.Frame(parent, bg=BG)
         right.grid(row=0, column=1, sticky="nsew")
 
-        # ── Gantt Section ──
+        # GANTT SECTION
         tk.Label(right, text="GANTT CHART", bg=BG, fg=MUTED,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
@@ -608,17 +610,18 @@ class MainApp(tk.Tk):
         gsc.pack(fill="x", padx=8, pady=(0, 8))
         self.gantt_canvas.configure(xscrollcommand=gsc.set)
 
-        # ── Table Section ──
+        # TABLE SECTION
         tk.Label(right, text="RESULTS TABLE", bg=BG, fg=MUTED,
                  font=("Segoe UI", 8, "bold"), anchor="w").pack(fill="x", pady=(0, 4))
 
         table_card = tk.Frame(right, bg=CARD)
         table_card.pack(fill="both", expand=True)
 
-        # Inner frame for treeview + scrollbar side by side
+        # Inner frame for SCROLLBAR
         tree_frame = tk.Frame(table_card, bg=CARD)
         tree_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
+        #Label for Results Table
         cols = ("pid", "at", "bt", "priority", "finish", "tat", "wt")
         self.tree = ttk.Treeview(tree_frame, columns=cols,
                                   show="headings", selectmode="none")
@@ -637,7 +640,7 @@ class MainApp(tk.Tk):
 
         self.tree.tag_configure("alt", background="#1e2235")
 
-        self._draw_placeholder()
+        self.buildGanttChart()
 
     # ── Helper widgets ───────────────────────────
     def sectionLabel(self, parent, text, pady=(0,4), side=None):
@@ -679,21 +682,22 @@ class MainApp(tk.Tk):
     def _update_stat(self, card, value):
         card._val_lbl.config(text=value)
 
-    # ── Process rows ─────────────────────────────
-    def _add_process_row(self):
+    # Adding Process Function
+    def addProcessFunction(self):
         idx = len(self.proc_rows)
         pid = f"P{idx+1}"
         row = tk.Frame(self.proc_frame, bg=BG)
         row.pack(fill="x", pady=5)
  
-        # Color swatch
+        # Random Color Selection
         color = processColors[idx % len(processColors)]
         tk.Label(row, text="█", bg=BG, fg=color,
                  font=("Segoe UI", 12), width=2).pack(side="left")
  
-        at_v  = tk.StringVar(value="0") #inital values
+        #Initial Values
+        at_v  = tk.StringVar(value="0") 
         bt_v  = tk.StringVar(value="1")
-        pri_v = tk.StringVar(value="1")
+        pri_v = tk.StringVar(value="0")
  
         pid_lbl = tk.Label(row, text=pid, bg=CARD, fg=TEXT,
                            font=("Consolas", 10, "bold"), width=4)
@@ -718,51 +722,34 @@ class MainApp(tk.Tk):
  
         self.proc_rows.append((pid, at_v, bt_v, pri_v, row))
         
-            
-        tk.Button(
-            row,
-            text="─",
-            fg=ERROR,
-            bg=BG,
-            bd=0,
-            padx=20,
-            cursor="hand2",
-            command=lambda r=row, item=(pid, at_v, bt_v, pri_v, row): 
-                self._remove_process(r, item)
-        ).pack(side="right", padx=5)
+
+        tk.Button(row, text="─", fg=ERROR, bg=BG, bd=0, padx=20, cursor="hand2", command=lambda r=row, item=(pid, at_v, bt_v, pri_v, row): 
+            self.removeProcess(r, item)).pack(side="right", padx=5)
     
-    
-    def _remove_process(self, r, item):
+    # function for removing process
+    def removeProcess(self, r, item):
         if len(self.proc_rows) <= 3:
             messagebox.showwarning("Minimum", "At least 3 processes required.")
             return
-
         r.destroy()
         self.proc_rows.remove(item)
 
-    # remove process
-    # def _remove_last_row(self):
-    #     if len(self.proc_rows) <= 3:
-    #         messagebox.showwarning("Minimum", "At least 3 processes required.")
-    #         return
-    #     _, _, _, _, row = self.proc_rows.pop()
-    #     row.destroy()
-    
-    #reset all process
-    def _reset_processes(self):
+    # function for reseting all process
+    def resetProcess(self):
+        
         # destroy all existing rows
         for _, _, _, _, row in self.proc_rows:
             row.destroy()
  
-        # clear the list
+        # clear the process list
         self.proc_rows.clear()
  
         # recreate initial 3 processes (default values)
         for i in range(3):
-            self._add_process_row()
- 
+            self.addProcessFunction()
+    
         # reset Gantt chart
-        self._draw_placeholder()
+        self.buildGanttChart()
  
         # reset summary stats
         self._update_stat(self.averageTATContainer, "—")
@@ -774,17 +761,17 @@ class MainApp(tk.Tk):
         for item in self.tree.get_children():
             self.tree.delete(item)
         
-        #reset the process input
+        # reset the process input
         self.numberProcessValue.set(3)
         
-        #reset the algorithm chose
+        # reset the algorithm chose
         self.algoSelected.set("FCFS")
         self.priorityContainer.pack_forget()
         self.quantumContainer.pack_forget()
         
 
-    # generate N initial processes from user input
-    def _generate_processes(self):
+    # generate process function based from user input
+    def generateProcessFunctioj(self):
         try:
             n = int(self.numberProcessValue.get())
             if n < 3:
@@ -793,27 +780,22 @@ class MainApp(tk.Tk):
             messagebox.showerror("Input Error", "Please enter a valid number of processes (≥ 3).")
             return
 
-    
-        # destroy all existing rows
+        # delete all existing rows process
         for _, _, _, _, row in self.proc_rows:
             row.destroy()
         self.proc_rows.clear()
 
-        # add N fresh rows
+        # add new rows
         for _ in range(n):
-            self._add_process_row()
+            self.addProcessFunction()
 
-    # clear process
-    def _clear_all_process(self):
-        print("ROWS:", self.proc_rows)
-        
+    # clear process values function
+    def clearValuesFunction(self):
         for _, pid_v, at_v, bt_v, _ in self.proc_rows:
             pid_v.set(0)
             at_v.set(1)
             bt_v.set(1)
             
-        # self.proc_rows.clear()
-        
 
     # ── Algorithm options visibility ─────────────
     def changeAlgo(self, _=None):
@@ -906,7 +888,7 @@ class MainApp(tk.Tk):
         self._update_stat(self.processCount, f"{n}")
 
     # ── Gantt Chart ──────────────────────────────
-    def _draw_placeholder(self):
+    def buildGanttChart(self):
         c = self.gantt_canvas
         c.delete("all")
         c.create_text(400, 80,
@@ -966,7 +948,7 @@ class MainApp(tk.Tk):
     def _fill_table(self, results):
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for i, r in enumerate(results):
+        for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
             tag = ("alt",) if i % 2 else ()
             self.tree.insert("", "end", values=(
                 r["pid"], r["at"], r["bt"], r["priority"],
@@ -1048,7 +1030,7 @@ class MainApp(tk.Tk):
             for col, lbl, w in [("pid","PID",50),("at","AT",60),("bt","BT",55),
                                   ("finish","Finish",65),("tat","TAT",60),("wt","WT",60)]:
                 tr.heading(col, text=lbl); tr.column(col, width=w, anchor="center")
-            for i, r in enumerate(results):
+            for i, r in enumerate(sorted(results, key=lambda x: int(x["pid"][1:]))):
                 tag = ("alt",) if i%2 else ()
                 tr.insert("", "end", values=(r["pid"],r["at"],r["bt"],
                                               r["finish"],r["tat"],r["wt"]), tags=tag)
