@@ -1,1 +1,0 @@
-const supportAi: string = "hello there"

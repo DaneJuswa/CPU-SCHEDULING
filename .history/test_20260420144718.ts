@@ -1,1 +1,0 @@
-const names: string = "George"
