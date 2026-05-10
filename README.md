@@ -3,7 +3,7 @@
 A Python-based simulation of CPU scheduling algorithms with GUI support. The program allows users to input processes, simulate scheduling, and analyze performance metrics.
 
 ## Demo Video
-[Watch Demo]([https://drive.google.com/drive/folders/19QlwrjvW4yh9lVJTkkLbQzWT2nqKD_FQ?usp=sharing](https://drive.google.com/file/d/1k9AzsQFbEAndVH7LVVAe9zeb3_nFse5r/view?usp=sharing))
+[Watch Demo](https://drive.google.com/file/d/1k9AzsQFbEAndVH7LVVAe9zeb3_nFse5r/view?usp=sharing)
 
 ## Features
 - GUI using Tkinter
