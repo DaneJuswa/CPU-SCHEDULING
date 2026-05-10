@@ -30,7 +30,7 @@ A Python-based simulation of CPU scheduling algorithms with GUI support. The pro
 ### Option 1: Run the Executable
 Download and double-click the file below:
 
-👉 [CPU_Scheduling.exe](./dist/NunogDaneJoshua3A_CpuScheduling.exe)
+👉 [NunogDaneJoshua3A_CpuScheduling.exe](./dist/NunogDaneJoshua3A_CpuScheduling.exe)
 
 ### Option 2: Run with Python
 ```bash
